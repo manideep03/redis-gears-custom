@@ -1,0 +1,1 @@
+* Redis Gears pipelines for write behind implementation
