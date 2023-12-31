@@ -34,7 +34,6 @@ def ValidateKeyValue(r):
         # confirmned value is not empty
         r['value'] = {SET_DEFAULT_KEY : r['value']}
         value = r['value']
-        WriteBehindLog(str(value))
 
         if OP_KEY not in value.keys():
             value[OP_KEY] = defaultOperation
@@ -79,10 +78,9 @@ def ValidateListValue(r):
             WriteBehindLog(msg)
             raise Exception(msg)
         # confirmned value is not empty
-        r['value'] = {SET_DEFAULT_KEY : ".".join(r['value'])}
+        r['value'] = {SET_DEFAULT_KEY : ",".join(r['value'])}
         value = r['value']
-        WriteBehindLog(str(value))
-
+        
         if OP_KEY not in value.keys():
             value[OP_KEY] = defaultOperation
         else:
