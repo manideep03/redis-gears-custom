@@ -270,40 +270,7 @@ def PrepareRecord(r):
 
     return {'key': realKey, 'value': realVal}
 
-def TryWriteToTarget(self):
-    func = CreateWriteDataFunction(self.connector)
-    def f(r):
-        key = r['key']
-        value = r['value']
-        keys = value.keys()
-        uuid = value.pop(UUID_KEY, None)
-        idToAck = '{%s}%s' % (r['key'], uuid)
-        try:
-            operation = value[OP_KEY]
-            mappedValue = {}
-            mappedValue[ORIGINAL_KEY] = key
-            mappedValue[self.connector.PrimaryKey()] = key.split(':')[1]
-            mappedValue[UUID_KEY] = uuid
-            mappedValue[OP_KEY] = operation
-            if operation == OPERATION_UPDATE_REPLICATE:
-                for kInHash, kInDB in self.mappings.items():
-                    if kInHash.startswith('_'):
-                        continue
-                    if kInHash not in keys:
-                        msg = 'Could not find %s in hash %s' % (kInHash, r['key'])
-                        WriteBehindLog(msg)
-                        raise Exception(msg)
-                    mappedValue[kInDB] = value[kInHash]
-            func([{'value':mappedValue}])
-        except Exception as e:
-            WriteBehindLog("Failed writing data to the database, error='%s'" % str(e))
-            # lets update the ack stream to failure
-            if uuid is not None and uuid != '':
-                execute('XADD', idToAck, '*', 'status', 'failed', 'error', str(e))
-                execute('EXPIRE', idToAck, ackExpireSeconds)
-            return False
-        return True
-    return f
+
 
 def UpdateHash(r):
     key = r['key']
@@ -345,9 +312,10 @@ def WriteNoReplicate(r):
         raise Exception(msg)
     return False
 
-class RGWriteBehind(RGWriteBase):
-    def __init__(self, GB, keysPrefix, mappings, connector, name, version=None,
-                 onFailedRetryInterval=5, batch=100, duration=100, transform=lambda r: r, eventTypes=['hset', 'hmset', 'del', 'change']):
+class DefaultWriteBehind(RGWriteBase):
+    def __init__(self, GB, keysPrefix, mappings, connector, name, version=None, primaryCacheKey=False,
+                 onFailedRetryInterval=5, batch=100, duration=100, transform=lambda r: r, 
+                 eventTypes=['hset', 'hmset', 'del', 'change']):
         '''
         Register a write behind execution to redis gears
 
