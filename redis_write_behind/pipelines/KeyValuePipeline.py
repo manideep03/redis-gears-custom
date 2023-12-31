@@ -74,7 +74,7 @@ def ValidateListValue(r):
         r['value'] = value
     else:
         # make sure its a hash
-        if not (isinstance(r['value'], str)) :
+        if not (isinstance(r['value'], list)) :
             msg = 'Got a none string value, key="%s" value="%s"' % (str(r['key']), str(r['value'] if 'value' in r.keys() else 'None'))
             WriteBehindLog(msg)
             raise Exception(msg)
