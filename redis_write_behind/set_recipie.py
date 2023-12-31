@@ -32,7 +32,7 @@ def ValidateKeyValue(r):
             WriteBehindLog(msg)
             raise Exception(msg)
         # confirmned value is not empty
-        r['value'] = {SET_DEFAULT_KEY : ",".join(r['value'])}
+        r['value'] = {SET_DEFAULT_KEY : r['value']}
         value = r['value']
         WriteBehindLog(str(value))
 
