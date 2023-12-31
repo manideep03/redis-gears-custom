@@ -1,3 +1,3 @@
-from redis_write_behind.pipelines.HashPipeline import DefaultWriteBehind
-from redis_write_behind.utils import MySqlConnection, MySqlConnector
-from redis_write_behind.pipelines.KeyValuePipeline import KeyValueWriteBehind, ListWriteBehind
+# __init__
+
+from redis_write_behind.wrapper import CreateWriteBehindJob
