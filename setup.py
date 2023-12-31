@@ -16,7 +16,7 @@ setup(
     author_email="manideep.gujjari@gmail.com",
     description=DESCRIPTION,
     long_description_content_type="text/markdown",
-    long_description=long_description,
+    long_description="",
     packages=find_packages(),
     install_requires=[],
     classifiers=[

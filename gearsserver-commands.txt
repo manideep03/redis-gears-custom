@@ -8,3 +8,5 @@ docker start redisgears
 
 to access redis from docker use
 docker exec -it redisgears redis-cli
+
+RG.PYEXECUTE 'log("installing requirements")' 'REQUIREMENTS' git+https://github.com/manideep03/redis-gears-custom.git
