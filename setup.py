@@ -3,9 +3,9 @@ import os
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-VERSION = '0.1.4'
+VERSION = '0.2.0'
 DESCRIPTION = 'Base package to test custom redis write behind gears pipelines'
-LONG_DESCRIPTION = 'Version 1'
+LONG_DESCRIPTION = 'Version 0.1'
 
 # Setting up
 setup(

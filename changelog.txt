@@ -1,0 +1,7 @@
+Version 0.1.0 
+- base pipelines
+- saving whole key
+- part of the key
+
+Version 0.2.0
+- pipeline for tracking set operations
