@@ -52,16 +52,7 @@ def ValidateKeyValue(r):
 
     return True
 
-class KeyValueWriteBehind(RGWriteBase):
-    def __init__(self, GB, keysPrefix, mappings, connector, name, version=None, 
-                 primaryCacheKey=True,
-                 onFailedRetryInterval=DEFAULT_ON_FAILED_RETRY_INTERVAL, 
-                 batch=DEFAULT_BATCH, 
-                 duration=DEFAULT_DURATION_IN_MS, 
-                 transform=lambda r: r, 
-                 eventTypes=LIST_EVENT_TYPES):
-        '''
-        Register a write behind execution to redis gears
+'''
 
         GB - The Gears builder object
 
