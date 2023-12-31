@@ -9,6 +9,10 @@ docker start redisgears
 to access redis from docker use
 docker exec -it redisgears redis-cli
 
+default master
 RG.PYEXECUTE 'log("installing requirements")' 'REQUIREMENTS' git+https://github.com/manideep03/redis-gears-custom.git
+
+with branch
+RG.PYEXECUTE 'log("installing requirements")' 'REQUIREMENTS' git+https://github.com/manideep03/redis-gears-custom.git@feature/set-config 
 
 RG.PYEXECUTE 'log("installing requirements")' 'REQUIREMENTS' sqlalchemy
