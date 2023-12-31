@@ -30,3 +30,5 @@ def create_job(jobConfig: dict):
         raise Exception("Config should be in python dict format!")
     validateConfig(dict)
     pickAndPreparePipeline(config=jobConfig)
+
+    
