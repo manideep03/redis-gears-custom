@@ -1,5 +1,5 @@
 from redisgears import executeCommand as execute
-from utils.basic_utils import *
+from redis_write_behind.utils.basic_utils import *
 import json
 import uuid
 

@@ -4,7 +4,7 @@ import os
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-VERSION = '0.0.3'
+VERSION = '0.0.4'
 DESCRIPTION = 'Base package to test custom rgsync'
 LONG_DESCRIPTION = 'Base version'
 

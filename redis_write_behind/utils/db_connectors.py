@@ -1,4 +1,4 @@
-from basic_utils import *
+from redis_write_behind.utils.basic_utils import *
 from redisgears import getMyHashTag as hashtag
 from collections import OrderedDict
 
