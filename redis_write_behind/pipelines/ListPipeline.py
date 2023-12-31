@@ -6,7 +6,8 @@ from redisgears import executeCommand as execute
 import json
 import uuid
 
-def ValidateHash(r):
+
+def ValidateListValue(r):
     key = r['key']
     value = r['value']
 
@@ -16,15 +17,19 @@ def ValidateHash(r):
         r['value'] = value
     else:
         # make sure its a hash
-        if not (isinstance(r['value'], dict)) :
-            msg = 'Got a none hash value, key="%s" value="%s"' % (str(r['key']), str(r['value'] if 'value' in r.keys() else 'None'))
+        if not (isinstance(r['value'], list)) :
+            msg = 'Got a none string value, key="%s" value="%s"' % (str(r['key']), str(r['value'] if 'value' in r.keys() else 'None'))
             WriteBehindLog(msg)
             raise Exception(msg)
+        # confirmned value is not empty
+        r['value'] = {SET_DEFAULT_KEY : ",".join(r['value'])}
+        value = r['value']
+        
         if OP_KEY not in value.keys():
             value[OP_KEY] = defaultOperation
         else:
             # we need to delete the operation key for the hash
-            execute('hdel', key, OP_KEY)
+            execute('del', key, OP_KEY)
 
     op = value[OP_KEY]
     if len(op) == 0:
@@ -48,14 +53,14 @@ def ValidateHash(r):
 
     return True
 
-class HashWriteBehind(RGWriteBase):
+class ListWriteBehind(RGWriteBase):
     def __init__(self, GB, keysPrefix, mappings, connector, name, version=None, 
-                 primaryCacheKey=False,
+                 primaryCacheKey=True,
                  onFailedRetryInterval=DEFAULT_ON_FAILED_RETRY_INTERVAL, 
                  batch=DEFAULT_BATCH, 
-                 duration=DEFAULT_DURATION_IN_MS, 
+                 duration=DEFAULT_BATCH, 
                  transform=lambda r: r, 
-                 eventTypes=HASH_EVENT_TYPES):
+                 eventTypes=LIST_EVENT_TYPES):
         '''
         Register a write behind execution to redis gears
 
@@ -109,9 +114,6 @@ class HashWriteBehind(RGWriteBase):
         version - The version to set to the new created registration. Old versions with the same
                name will be removed. 99.99.99 is greater then any other version (even from itself).
 
-        primaryCacheKey - If True The key in redis will be supplied as primary key.
-                          If False part of key will be supplied as primary key.
-
         batch - the batch size on which data will be writen to target
 
         duration - interval in ms in which data will be writen to target even if batch size did not reached
@@ -122,7 +124,6 @@ class HashWriteBehind(RGWriteBase):
 
         eventTypes - The events for which to trigger
         '''
-
         UUID = str(uuid.uuid4())
         self.GetStreamName = CreateGetStreamNameCallback(UUID)
 
@@ -136,7 +137,7 @@ class HashWriteBehind(RGWriteBase):
         }
         GB('KeysReader', desc=json.dumps(descJson)).\
         map(transform).\
-        filter(ValidateHash).\
+        filter(ValidateListValue).\
         filter(ShouldProcessData).\
         foreach(DeleteDataIfNeeded).\
         foreach(CreateAddToStreamFunction(self, primaryCacheKey)).\

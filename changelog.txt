@@ -5,3 +5,6 @@ Version 0.1.0
 
 Version 0.2.0
 - pipeline for tracking set operations
+
+Version 0.3.0
+- pipeline for tracking list operations
