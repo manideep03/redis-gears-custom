@@ -155,11 +155,11 @@ def UnregisterOldVersions(name, version):
                 raise Exception('Found a version which is greater or equals current version, aborting.')
     WriteBehindLog('Unregistered old versions')
 
-def CreateAddToStreamFunction(self):
+def CreateAddToStreamFunction(self, primaryCacheKey):
     def func(r):
         data = []
         data.append([ORIGINAL_KEY, r['key']])
-        if self.primaryCacheKey:
+        if primaryCacheKey:
             data.append([self.connector.PrimaryKey(), r['key']])
         else:
             # after key prefix value
@@ -368,8 +368,8 @@ class DefaultWriteBehind(RGWriteBase):
         filter(ValidateHash).\
         filter(ShouldProcessHash).\
         foreach(DeleteHashIfNeeded).\
-        foreach(CreateAddToStreamFunction(self)).\
-        register(mode='sync', prefix='%s:*' % keysPrefix, eventTypes=eventTypes, convertToStr=False)
+        foreach(CreateAddToStreamFunction(self, primaryCacheKey)).\
+        register(mode='sync', prefix='%s*' % keysPrefix, eventTypes=eventTypes, convertToStr=False)
 
         ## create the execution to write each key from stream to DB
         descJson = {
