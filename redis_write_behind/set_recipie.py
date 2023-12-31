@@ -34,7 +34,7 @@ def ValidateKeyValue(r):
         # confirmned value is not empty
         r['value'] = {SET_DEFAULT_KEY : ",".join(r['value'])}
         value = r['value']
-        WriteBehindLog("data is "+str(value))
+        WriteBehindLog(str(value))
 
         if OP_KEY not in value.keys():
             value[OP_KEY] = defaultOperation
