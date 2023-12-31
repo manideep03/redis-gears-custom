@@ -3,10 +3,6 @@ from redis_write_behind.utils.basic_utils import *
 import json
 import uuid
 
-'''
-base took from rgsync
-'''
-
 ackExpireSeconds = 3600
 
 def SafeDeleteKey(key):
@@ -62,33 +58,6 @@ def ValidateHash(r):
     r['value'] = value
 
     return True
-
-def ValidateJSONHash(r):
-    key = r['key']
-    exists = execute("EXISTS", key)
-    if exists == 1:
-        r['value'] = {'sync_data': execute("JSON.GET", key)}
-        if r['value'] == None:
-            r['value'] = {OP_KEY : OPERATION_DEL_REPLICATE}
-        r['value'][OP_KEY] = defaultOperation
-    else:
-        r['value'] = {OP_KEY : OPERATION_DEL_REPLICATE}
-    value = r['value']
-
-    operation = value[OP_KEY][0]
-
-    if operation not in OPERATIONS:
-        msg = 'Got unknown operations "%s"' % operation
-        WriteBehindLog(msg)
-        raise Exception(msg)
-
-    # lets extrac uuid to ack on
-    uuid = value[OP_KEY][1:]
-    value[UUID_KEY] = uuid if uuid != '' else None
-    value[OP_KEY] = operation
-    r['value'] = value
-
-    return r
 
 def DeleteHashIfNeeded(r):
     key = r['key']
@@ -190,7 +159,11 @@ def CreateAddToStreamFunction(self):
     def func(r):
         data = []
         data.append([ORIGINAL_KEY, r['key']])
-        data.append([self.connector.PrimaryKey(), r['key'].split(':')[1]])
+        if self.primaryCacheKey:
+            data.append([self.connector.PrimaryKey(), r['key']])
+        else:
+            # after key prefix value
+            data.append([self.connector.PrimaryKey(), r['key'].split(self.keysPrefix)[-1]])
         if 'value' in r.keys():
             value = r['value']
             uuid = value.pop(UUID_KEY, None)
