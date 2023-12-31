@@ -1,2 +1,3 @@
 from redis_write_behind.custoum_recipie import DefaultWriteBehind
 from redis_write_behind.utils import MySqlConnection, MySqlConnector
+from redis_write_behind.set_recipie import KeyValueWriteBehind

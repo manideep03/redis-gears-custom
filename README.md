@@ -8,3 +8,8 @@ Version 0.1.0
 - base pipelines
 - saving whole key
 - part of the key
+
+
+-> TBD
+simplyfy package with a json way, easier to control with api's
+Basically a wrapping function which read config and send prepare the job
