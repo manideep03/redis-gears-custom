@@ -2,7 +2,7 @@ from redis_write_behind.utils.db_connectors import MySqlConnection, MySqlConnect
 from redis_write_behind.pipelines import KeyValueWriteBehind, ListWriteBehind, HashWriteBehind
 
 class WBJobBuilder():
-    def __init__(self, jobConfig:dict) -> str:
+    def __init__(self, GB, jobConfig:dict) -> str:
         self.__validateJob(jobConfig)
         dt = jobConfig['targetDataType'].lower()
         keyFlag = False
