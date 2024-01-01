@@ -4,7 +4,7 @@ from redis_write_behind.pipelines.BasePipeline import *
 import json
 import uuid
 
-def ValidateHash(r):
+def ValidateListValue(r):
     key = r['key']
     value = r['value']
 
@@ -13,16 +13,20 @@ def ValidateHash(r):
         value = {OP_KEY : OPERATION_DEL_REPLICATE}
         r['value'] = value
     else:
-        # make sure its a hash
-        if not (isinstance(r['value'], dict)) :
-            msg = 'Got a none hash value, key="%s" value="%s"' % (str(r['key']), str(r['value'] if 'value' in r.keys() else 'None'))
+        # make sure its a list
+        if not (isinstance(r['value'], list)) :
+            msg = 'Got a none string value, key="%s" value="%s"' % (str(r['key']), str(r['value'] if 'value' in r.keys() else 'None'))
             WriteBehindLog(msg)
             raise Exception(msg)
+        # confirmned value is not empty
+        r['value'] = {SET_DEFAULT_KEY : ",".join(r['value'])}
+        value = r['value']
+        
         if OP_KEY not in value.keys():
             value[OP_KEY] = defaultOperation
         else:
             # we need to delete the operation key for the hash
-            execute('hdel', key, OP_KEY)
+            execute('del', key, OP_KEY)
 
     op = value[OP_KEY]
     if len(op) == 0:
@@ -46,12 +50,12 @@ def ValidateHash(r):
 
     return True
 
-class HashWriteBehind(RGWriteBase):
-    def __init__(self, GB, keysPrefix, mappings, connector, name, version=None, primaryCacheKey=False,
-                 onFailedRetryInterval=DEFAULT_FAILED_RETRY_INTERVAL, batch=DEFAULT_BATCH, duration=DEFAULT_DURATION_IN_MS, 
+class ListWriteBehind(RGWriteBase):
+    def __init__(self, GB, keysPrefix, mappings, connector, name, version=None, primaryCacheKey=True,
+                 onFailedRetryInterval=DEFAULT_FAILED_RETRY_INTERVAL, batch=DEFAULT_BATCH, duration=DEFAULT_DURATION_IN_MS,
                  transform=lambda r: r, 
-                 eventTypes=HASH_EVENT_TYPES):
-        
+                 eventTypes=LIST_EVENT_TYPES):
+
         UUID = str(uuid.uuid4())
         self.GetStreamName = CreateGetStreamNameCallback(UUID)
 
@@ -65,7 +69,7 @@ class HashWriteBehind(RGWriteBase):
         }
         GB('KeysReader', desc=json.dumps(descJson)).\
         map(transform).\
-        filter(ValidateHash).\
+        filter(ValidateListValue).\
         filter(ShouldProcessData).\
         foreach(DeleteDataIfNeeded).\
         foreach(CreateAddToStreamFunction(self, primaryCacheKey)).\

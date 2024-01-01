@@ -15,6 +15,16 @@ OPERATION_UPDATE_NOREPLICATE = '+'
 OPERATIONS = [OPERATION_DEL_REPLICATE, OPERATION_DEL_NOREPLICATE, OPERATION_UPDATE_REPLICATE, OPERATION_UPDATE_NOREPLICATE]
 defaultOperation = OPERATION_UPDATE_REPLICATE
 
+ackExpireSeconds = 3600
+
+DEFAULT_BATCH = 100
+DEFAULT_DURATION_IN_MS = 100
+DEFAULT_FAILED_RETRY_INTERVAL = 5
+
+LIST_EVENT_TYPES = ['lpop', 'lpush', 'lrem', 'rpop', 'rpush', 'del', 'change']
+HASH_EVENT_TYPES = ['hset', 'hmset', 'del', 'change']
+KEY_VALUE_EVENT_TYPES = ['set', 'del', 'change']
+
 def WriteBehindLog(msg, prefix='%s - ' % NAME, logLevel='notice'):
     msg = prefix + msg
     log(msg, level=logLevel)
