@@ -16,3 +16,7 @@ with branch
 RG.PYEXECUTE 'log("installing requirements")' 'REQUIREMENTS' git+https://github.com/manideep03/redis-gears-custom.git@feature/set-config 
 
 RG.PYEXECUTE 'log("installing requirements")' 'REQUIREMENTS' sqlalchemy
+
+
+TBD
+Include this package as primary in redis server. Upon start up install req and check reqs
