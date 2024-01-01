@@ -13,13 +13,10 @@ class WBJobBuilder():
         
         if dt == 'hash':
             HashWriteBehind(GB, connector=__conn, keysPrefix=jobConfig['keysPrefix'], name=jobConfig['name'], version=jobConfig['version'], mappings=jobConfig['keysMapping'], primaryCacheKey=keyFlag)
-            return 'Ok'
         if dt == 'list':
             ListWriteBehind(GB, connector=__conn, keysPrefix=jobConfig['keysPrefix'], name=jobConfig['name'], version=jobConfig['version'], mappings=jobConfig['keysMapping'])
-            return 'Ok'
         if dt == 'keyValue':
             KeyValueWriteBehind(GB, connector=__conn, keysPrefix=jobConfig['keysPrefix'], name=jobConfig['name'], version=jobConfig['version'], mappings=jobConfig['keysMapping'])
-            return 'Ok'
         else:
             raise Exception("%s target datatype not compatible".format(dt))
 
