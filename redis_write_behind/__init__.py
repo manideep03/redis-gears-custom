@@ -1,1 +1,1 @@
-from redis_write_behind.wrapper.main import WBJobBuilder
+from redis_write_behind.wrapper import WBJobBuilder
