@@ -1,7 +1,7 @@
 Docker base server
 
 GET server
-docker run -d --name redisgears -p 6379:6379 redislabs/redisgears:latest
+    docker run -d --name redisgears -p 6379:6379 redislabs/redisgears:latest
 
 Start server
 docker start redisgears

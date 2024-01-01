@@ -6,7 +6,7 @@ class WBJobBuilder():
         self.__validateJob(jobConfig)
         dt = jobConfig['targetDataType'].lower()
         keyFlag = False
-        if 'primaryCacheKey' in jobConfig.keys and jobConfig['primaryCacheKey'] == 1:
+        if 'primaryCacheKey' in jobConfig.keys() and jobConfig['primaryCacheKey'] == 1:
             keyFlag = True
         
         __conn = self.__prepareConnector(jobConfig)
