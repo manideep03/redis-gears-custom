@@ -4,8 +4,9 @@ import os
 here = os.path.abspath(os.path.dirname(__file__))
 
 VERSION = '0.4.1'
+VERSION = '0.5.0'
 DESCRIPTION = 'Base package to test custom redis write behind gears pipelines'
-LONG_DESCRIPTION = 'Version 0.4'
+LONG_DESCRIPTION = 'Version 0.5'
 
 # Setting up
 setup(
@@ -19,7 +20,7 @@ setup(
     packages=find_packages(),
     install_requires=[],
     classifiers=[
-        "Development Status :: Version 1",
+        "Development Status :: Version 1.1",
         "Intended Audience :: Developers",
         "Programming Language :: Python :: 3",
         "Operating System :: Unix",
