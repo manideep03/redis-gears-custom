@@ -72,7 +72,7 @@ class KeyValueWriteBehind(RGWriteBase):
         filter(ValidateKeyValue).\
         filter(ShouldProcessData).\
         foreach(DeleteDataIfNeeded).\
-        foreach(CreateAddToStreamFunction(self, primaryCacheKey)).\
+        foreach(CreateAddToStreamFunction(self, primaryCacheKey, keysPrefix)).\
         register(mode='sync', prefix='%s*' % keysPrefix, eventTypes=eventTypes, convertToStr=False)
 
         ## create the execution to write each key from stream to DB

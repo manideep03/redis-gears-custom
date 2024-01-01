@@ -110,7 +110,7 @@ def UnregisterOldVersions(name, version):
                 raise Exception('Found a version which is greater or equals current version, aborting.')
     WriteBehindLog('Unregistered old versions')
 
-def CreateAddToStreamFunction(self, primaryCacheKey):
+def CreateAddToStreamFunction(self, primaryCacheKey, keysPrefix):
     def func(r):
         data = []
         data.append([ORIGINAL_KEY, r['key']])
@@ -118,7 +118,7 @@ def CreateAddToStreamFunction(self, primaryCacheKey):
             data.append([self.connector.PrimaryKey(), r['key']])
         else:
             # after key prefix value
-            data.append([self.connector.PrimaryKey(), r['key'].split(self.keysPrefix)[-1]])
+            data.append([self.connector.PrimaryKey(), r['key'].split(keysPrefix)[-1]])
         if 'value' in r.keys():
             value = r['value']
             uuid = value.pop(UUID_KEY, None)
