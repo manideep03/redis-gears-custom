@@ -8,7 +8,8 @@ class WBJobBuilder():
         self.__validateJob(jobConfig)
 
     def expireKeyTest(self, name, version) -> str:
-        TrackExpireKey(name=name, version=version)
+        GB = self.__GB
+        TrackExpireKey(GB=GB, name=name, version=version)
         return "OK"
     
     def create(self) -> str:

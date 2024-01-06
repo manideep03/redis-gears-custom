@@ -11,7 +11,7 @@ def LogDataFun(r):
     return True
 
 class TrackExpireKey():
-    def __init__(self, name, version):        
+    def __init__(self, GB, name, version):        
         UUID = str(uuid.uuid4())
         self.GetStreamName = CreateGetStreamNameCallback(UUID)
 
