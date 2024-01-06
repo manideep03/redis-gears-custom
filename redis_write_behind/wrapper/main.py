@@ -1,11 +1,15 @@
 from redis_write_behind.utils.db_connectors import MySqlConnection, MySqlConnector
-from redis_write_behind.pipelines import KeyValueWriteBehind, ListWriteBehind, HashWriteBehind
+from redis_write_behind.pipelines import KeyValueWriteBehind, ListWriteBehind, HashWriteBehind, TrackExpireKey
 
 class WBJobBuilder():
     def __init__(self, GB, jobConfig:dict):
         self.__config = jobConfig
         self.__GB = GB
         self.__validateJob(jobConfig)
+
+    def expireKeyTest(self, name, version) -> str:
+        TrackExpireKey(name=name, version=version)
+        return "OK"
     
     def create(self) -> str:
         jobConfig = self.__config
