@@ -21,9 +21,9 @@ DEFAULT_BATCH = 100
 DEFAULT_DURATION_IN_MS = 100
 DEFAULT_FAILED_RETRY_INTERVAL = 5
 
-LIST_EVENT_TYPES = ['lpop', 'lpush', 'lrem', 'rpop', 'rpush', 'del', 'change']
-HASH_EVENT_TYPES = ['hset', 'hmset', 'del', 'change']
-KEY_VALUE_EVENT_TYPES = ['set', 'del', 'change']
+LIST_EVENT_TYPES = ['lpop', 'lpush', 'lrem', 'rpop', 'rpush', 'del', 'change', 'expired']
+HASH_EVENT_TYPES = ['hset', 'hmset', 'del', 'change', 'expired']
+KEY_VALUE_EVENT_TYPES = ['set', 'del', 'change', 'expired']
 
 def WriteBehindLog(msg, prefix='%s - ' % NAME, logLevel='notice'):
     msg = prefix + msg

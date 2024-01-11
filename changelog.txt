@@ -11,3 +11,6 @@ Version 0.3.0
 
 Version 0.5.0
 - Dict base processing and refactor package
+
+Version 0.6.0
+- key expired event capturing
