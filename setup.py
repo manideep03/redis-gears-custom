@@ -3,9 +3,9 @@ import os
 
 here = os.path.abspath(os.path.dirname(__file__))
 
-VERSION = '0.6.0'
+VERSION = '0.7.0'
 DESCRIPTION = 'Base package to test custom redis write behind gears pipelines'
-LONG_DESCRIPTION = 'Version 0.6'
+LONG_DESCRIPTION = 'Version 0.7'
 
 # Setting up
 setup(
@@ -17,7 +17,7 @@ setup(
     long_description_content_type="text/markdown",
     long_description="",
     packages=find_packages(),
-    install_requires=[],
+    install_requires=['mysql', 'PyMySQL', 'cryptography'],
     classifiers=[
         "Development Status :: Version 1.1",
         "Intended Audience :: Developers",
